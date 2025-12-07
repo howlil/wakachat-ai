@@ -1,8 +1,16 @@
 import { Box, Flex } from '@chakra-ui/react'
 import { useNavigate, useLocation } from '@tanstack/react-router'
-import { MessageSquare, Radio, Bot, Newspaper, LogOut } from 'lucide-react'
+import {
+  MessageSquare,
+  Radio,
+  Bot,
+  Newspaper,
+  BarChart3,
+  LogOut,
+} from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useState } from 'react'
+import logoIcon from '@/logo.svg'
 
 interface SidebarItem {
   icon: React.ComponentType<{ size?: number; className?: string }>
@@ -19,6 +27,7 @@ const sidebarItems: SidebarItem[] = [
   { icon: Radio, label: 'Campaigns', path: '/dashboard/broadcast' },
   { icon: Bot, label: 'Automation', path: '/dashboard/ai-agent' },
   { icon: Newspaper, label: 'Scraping News', path: '/dashboard/scraping-news' },
+  { icon: BarChart3, label: 'Analytics', path: '/dashboard/analytics' },
 ]
 
 export const Sidebar = () => {
@@ -51,19 +60,25 @@ export const Sidebar = () => {
       position="relative"
     >
       <Box mb={6}>
-        <Box
-          w="36px"
-          h="36px"
-          bgGradient="linear(to-br, blue.500, purple.500)"
-          borderRadius="lg"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Box as="span" color="white" fontSize="sm" fontWeight="bold">
-            W
-          </Box>
-        </Box>
+        <img
+          src={logoIcon}
+          alt="Logo"
+          style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '8px',
+            objectFit: 'contain',
+            cursor: 'pointer',
+            transition: 'opacity 0.2s',
+          }}
+          onClick={() => navigate({ to: '/dashboard' as any })}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = '0.8'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = '1'
+          }}
+        />
       </Box>
 
       <Flex

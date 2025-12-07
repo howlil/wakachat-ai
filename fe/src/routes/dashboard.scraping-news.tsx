@@ -1,16 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Heading } from '@chakra-ui/react'
+import { NewsPage } from '@/components/news/NewsPage'
 
-export const Route = createFileRoute('/dashboard/scraping-news')({
-  component: ScrapingNewsPage,
+export const Route = createFileRoute('/dashboard/scraping-news' as any)({
+  component: NewsPage,
 })
-
-function ScrapingNewsPage() {
-  return (
-    <Box p={8}>
-      <Heading size="lg" mb={4}>
-        Scraping News
-      </Heading>
-    </Box>
-  )
-}

@@ -13,12 +13,14 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <Sidebar />
       <Flex flex={1} flexDirection="column" overflow="hidden">
         <Navbar />
-              <Box flex={1}
-                  bg="white"
-                  margin={3}
-                  rounded="md"
-                  
-                >
+        <Box
+          flex={1}
+          bg="white"
+          margin={3}
+          rounded="md"
+          overflow="auto"
+          minH={0}
+        >
           {children}
         </Box>
       </Flex>

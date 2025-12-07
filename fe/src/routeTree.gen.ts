@@ -11,11 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardScrapingNewsRouteImport } from './routes/dashboard.scraping-news'
 import { Route as DashboardConversationRouteImport } from './routes/dashboard.conversation'
 import { Route as DashboardBroadcastRouteImport } from './routes/dashboard.broadcast'
+import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard.analytics'
 import { Route as DashboardAiAgentRouteImport } from './routes/dashboard.ai-agent'
 
 const LoginRoute = LoginRouteImport.update({
@@ -26,16 +25,6 @@ const LoginRoute = LoginRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardScrapingNewsRoute = DashboardScrapingNewsRouteImport.update({
@@ -53,6 +42,11 @@ const DashboardBroadcastRoute = DashboardBroadcastRouteImport.update({
   path: '/broadcast',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardAnalyticsRoute = DashboardAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardAiAgentRoute = DashboardAiAgentRouteImport.update({
   id: '/ai-agent',
   path: '/ai-agent',
@@ -60,32 +54,29 @@ const DashboardAiAgentRoute = DashboardAiAgentRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/dashboard/ai-agent': typeof DashboardAiAgentRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/broadcast': typeof DashboardBroadcastRoute
   '/dashboard/conversation': typeof DashboardConversationRoute
   '/dashboard/scraping-news': typeof DashboardScrapingNewsRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/dashboard/ai-agent': typeof DashboardAiAgentRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/broadcast': typeof DashboardBroadcastRoute
   '/dashboard/conversation': typeof DashboardConversationRoute
   '/dashboard/scraping-news': typeof DashboardScrapingNewsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/dashboard/ai-agent': typeof DashboardAiAgentRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/broadcast': typeof DashboardBroadcastRoute
   '/dashboard/conversation': typeof DashboardConversationRoute
   '/dashboard/scraping-news': typeof DashboardScrapingNewsRoute
@@ -93,39 +84,34 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/admin'
     | '/dashboard'
     | '/login'
     | '/dashboard/ai-agent'
+    | '/dashboard/analytics'
     | '/dashboard/broadcast'
     | '/dashboard/conversation'
     | '/dashboard/scraping-news'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/admin'
     | '/dashboard'
     | '/login'
     | '/dashboard/ai-agent'
+    | '/dashboard/analytics'
     | '/dashboard/broadcast'
     | '/dashboard/conversation'
     | '/dashboard/scraping-news'
   id:
     | '__root__'
-    | '/'
-    | '/admin'
     | '/dashboard'
     | '/login'
     | '/dashboard/ai-agent'
+    | '/dashboard/analytics'
     | '/dashboard/broadcast'
     | '/dashboard/conversation'
     | '/dashboard/scraping-news'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   LoginRoute: typeof LoginRoute
 }
@@ -144,20 +130,6 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/scraping-news': {
@@ -181,6 +153,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardBroadcastRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/analytics': {
+      id: '/dashboard/analytics'
+      path: '/analytics'
+      fullPath: '/dashboard/analytics'
+      preLoaderRoute: typeof DashboardAnalyticsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/ai-agent': {
       id: '/dashboard/ai-agent'
       path: '/ai-agent'
@@ -193,6 +172,7 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteChildren {
   DashboardAiAgentRoute: typeof DashboardAiAgentRoute
+  DashboardAnalyticsRoute: typeof DashboardAnalyticsRoute
   DashboardBroadcastRoute: typeof DashboardBroadcastRoute
   DashboardConversationRoute: typeof DashboardConversationRoute
   DashboardScrapingNewsRoute: typeof DashboardScrapingNewsRoute
@@ -200,6 +180,7 @@ interface DashboardRouteChildren {
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAiAgentRoute: DashboardAiAgentRoute,
+  DashboardAnalyticsRoute: DashboardAnalyticsRoute,
   DashboardBroadcastRoute: DashboardBroadcastRoute,
   DashboardConversationRoute: DashboardConversationRoute,
   DashboardScrapingNewsRoute: DashboardScrapingNewsRoute,
@@ -210,8 +191,6 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
   DashboardRoute: DashboardRouteWithChildren,
   LoginRoute: LoginRoute,
 }

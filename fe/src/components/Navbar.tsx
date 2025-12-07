@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, LogOut, User } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
 import { useAuthStore } from '@/store/authStore'
 import { useState } from 'react'
@@ -12,10 +12,15 @@ export const Navbar = () => {
   const handleLogout = () => {
     clearAuth()
     navigate({ to: '/login' as any })
+    setIsOpen(false)
   }
 
   const getInitials = (name?: string) => {
     if (!name) return 'U'
+    const parts = name.split(' ')
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+    }
     return name
       .split(' ')
       .map((n) => n[0])
@@ -23,6 +28,19 @@ export const Navbar = () => {
       .toUpperCase()
       .slice(0, 2)
   }
+
+  const getShortName = (name?: string) => {
+    if (!name) return 'User'
+    const parts = name.split(' ')
+    if (parts.length >= 2) {
+      return `${parts[0]} ${parts[parts.length - 1][0]}.`
+    }
+    return name
+  }
+
+  const displayName = user?.name || 'User'
+  const displayEmail = user?.email || 'user@example.com'
+  const shortName = getShortName(displayName)
 
   return (
     <Box
@@ -33,47 +51,37 @@ export const Navbar = () => {
       px={6}
       display="flex"
       alignItems="center"
-      justifyContent="space-between"
+      justifyContent="flex-end"
       position="relative"
       zIndex={10}
     >
-      <Box>
-        <Text fontSize="lg" fontWeight="bold" color="gray.800">
-          Dashboard
-        </Text>
-      </Box>
 
       <Flex
         as="button"
         alignItems="center"
-        gap={3}
+        gap={2}
         cursor="pointer"
         onClick={() => setIsOpen(!isOpen)}
         _hover={{ opacity: 0.8 }}
       >
+        <Text fontSize="sm" fontWeight="medium" color="gray.800">
+          {shortName}
+        </Text>
         <Box
           w="32px"
           h="32px"
           borderRadius="full"
-          bg="blue.500"
-          color="white"
+          bg="blue.100"
+          color="blue.600"
           display="flex"
           alignItems="center"
           justifyContent="center"
           fontSize="xs"
           fontWeight="bold"
         >
-          {getInitials(user?.name)}
+          {getInitials(displayName)}
         </Box>
-        <Box display={{ base: 'none', md: 'block' }}>
-          <Text fontSize="sm" fontWeight="medium">
-            {user?.name || 'User'}
-          </Text>
-          <Text fontSize="xs" color="gray.600">
-            {user?.email || 'user@example.com'}
-          </Text>
-        </Box>
-        <ChevronDown size={16} />
+        <ChevronDown size={16} color="#6B7280" />
       </Flex>
 
       {isOpen && (
@@ -96,20 +104,55 @@ export const Navbar = () => {
             borderColor="gray.200"
             borderRadius="md"
             boxShadow="lg"
-            minW="150px"
+            minW="200px"
             zIndex={999}
-            py={2}
+            overflow="hidden"
           >
-            <Box
-              as="button"
-              w="100%"
-              px={4}
-              py={2}
-              textAlign="left"
-              _hover={{ bg: 'gray.50' }}
-              onClick={handleLogout}
-            >
-              <Text fontSize="sm">Logout</Text>
+            <Box px={4} py={3} borderBottomWidth={1} borderColor="gray.200">
+              <Text fontSize="sm" fontWeight="medium" color="gray.900" mb={1}>
+                {displayName}
+              </Text>
+              <Text fontSize="xs" color="gray.600">
+                {displayEmail}
+              </Text>
+            </Box>
+            <Box py={1}>
+              <Box
+                as="button"
+                w="100%"
+                px={4}
+                py={2}
+                textAlign="left"
+                display="flex"
+                alignItems="center"
+                gap={2}
+                _hover={{ bg: 'gray.50' }}
+                onClick={() => {
+                  setIsOpen(false)
+                }}
+              >
+                <User size={16} color="#6B7280" />
+                <Text fontSize="sm" color="gray.700">
+                  Profile Settings
+                </Text>
+              </Box>
+              <Box
+                as="button"
+                w="100%"
+                px={4}
+                py={2}
+                textAlign="left"
+                display="flex"
+                alignItems="center"
+                gap={2}
+                _hover={{ bg: 'gray.50' }}
+                onClick={handleLogout}
+              >
+                <LogOut size={16} color="#6B7280" />
+                <Text fontSize="sm" color="gray.700">
+                  Keluar
+                </Text>
+              </Box>
             </Box>
           </Box>
         </>

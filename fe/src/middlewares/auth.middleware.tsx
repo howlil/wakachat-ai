@@ -29,7 +29,7 @@ export const AuthGuard = ({
       user &&
       !requireRoles.includes(user.role)
     ) {
-      navigate({ to: '/' })
+      navigate({ to: '/login' as any })
       return
     }
   }, [requireAuth, isAuthenticated, requireRoles, user, navigate])
